@@ -1,1 +1,3 @@
 # world_vision
+The objective of this project is to identify and test AI tools that can streamline the categorization of corporate product donations and automate dependency analysis. Our goal is to develop a classification system that assigns products to relevant categories, determines the ideal end-user, and flags items requiring additional components for functionality. By leveraging AI-powered tools, we will evaluate different models for their ability to process medical supply data, refine categorization accuracy, and optimize decision-making. Based on our findings, we will recommend the most effective AI solution for improving efficiency and consistency in corporate donation assessments.
+
