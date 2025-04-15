@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Inventory Categorizer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOM8d7x1z5l5e5c5e5e5e5e5e5e5e5e5e5e5e5" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <div class = "container">
+    <header>
+        <h1> Medical Inventory Categorizer</h1>
+        <p class ="tagline"> Automatically categorize your medical inventory data</p>
+    </header>
+    
+    <main>
+        <div class="card">
+            <div class=""card-header">
+                <h2><i class = "fas fa-upload"></i> Upload Inventory Data</h2>
+            </div>
+            <div class="card-body">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div_class = "alert alert-warning">
+                            <ul>
+                            {% for message in messages %}
+                                <li>{{ message }}</li>
+                            {% endfor %}
+                            </ul>
+                        </div_class>
+                    {% endif %}
+                {% endwith %}
+                
+                <form method="POST" enctype="multipart/form-data">
+                    <div class=""file-upload">
+                        <div class = "file-select">
+                            <div class="file-select-button" id="fileName">Choose File</div>
+                            <div class="file-select-name" id="noFile">No file chosen...</div>
+                            <input type="file" name="file" id="chooseFile" accept=".csv">
+                        </div>
+                    </div>
+                    <p class="help-text">Upload a CSV file containting your inventory data</p>
+                    <button type = "submit" class="btn btn-primary">
+                        <i class="fas fa-upload"></i> Upload
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h3>How it works</h3>
+            <div class = "step-container">
+                <div class = "step">
+                    <div class = "step-number">1</div>
+                    <div class = "step-content">
+                        <h4>Upload your inventory data</h4>
+                        <p>Upload a CSV file containing your inventory data.</p>
+                    </div>
+                </div>
+                <div class = "step">
+                    <div class = "step-number">2</div>
+                    <div class = "step-content">
+                        <h4>Upload your Inventory Data</h4>
+                        <p> Choose processing options and review your data</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class = "step-number">3</div>
+                    <div class = "step-content">
+                        <h4>Process with AI</h4>
+                        <p>Our system categorizes your items using keyword matching and AI</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class = "step-number">4</div>
+                    <div class = "step-content">
+                        <h4>Download Results</h4>
+                        <p>Download your categorized results</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 World Vision Medical Inventory System. All rights reserved.</p>
+    </footer>
+    </div>
+    <script>
+        //File input name display
+        document.getELementById('chooseFile').addEventListener('change', function() {
+            const fileName = this.files[0] ? this.files[0].name : 'No file chosen...';
+            document.getElementById('noFile').textContent = fileName;
+        });
+    </script>
+</body>
+</html>
