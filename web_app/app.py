@@ -62,4 +62,8 @@ def index():
         else:
             flash('Invalid file type. Only CSV and Excel files are allowed.')
             return redirect(request.url)
+            
     return render_template('index.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)

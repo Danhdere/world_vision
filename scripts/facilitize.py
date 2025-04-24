@@ -30,7 +30,17 @@ class FacilitySuitabilityClassifier:
             "sterilization", "autoclave", "pressure cooker", "rapid test",
             "hiv test", "malaria test", "pregnancy test", "urinalysis", "dipstick",
             "first aid", "oral medication", "injection", "immunization", "vaccine",
-            "iv fluid", "cannula", "catheter", "splint", "crutch"
+            "iv fluid", "cannula", "catheter", "splint", "crutch",
+            "otoscope", "ophthalmoscope", "tongue depressor", "reflex hammer", 
+            "tape measure", "height measure", "scale", "pulse oximeter", 
+            "examination table", "examination lamp", "cold chain", "vaccine carrier",
+            "sharps container", "waste bin", "biohazard", "glove", "mask", "cap",
+            "apron", "forceps", "scissors", "needle", "syringe", "suture",
+            "antiseptic", "disinfectant", "cotton", "gauze", "tape", "plaster",
+            "thermometer", "measuring cup", "spoon", "dropper", "tablet", "capsule",
+            "infant scale", "measuring tape", "fetal doppler", "birthing kit", 
+            "suction bulb", "umbilical cord", "delivery mat", "partograph", 
+            "disposable", "consumable", "basic", "manual", "hand-held", "portable"
         ]
         
         # Equipment typically found in district hospitals only
@@ -42,7 +52,17 @@ class FacilitySuitabilityClassifier:
             "incubator", "blood bank", "refrigerator", "cpap", "icu", "intensive care",
             "cesarean", "theatre", "surgery", "fracture", "biopsy", "endoscopy",
             "laparoscopy", "microscope", "centrifuge", "culture", "microbiology",
-            "monitor", "patient monitor", "fetal monitor", "cross matching", "transfusion"
+            "monitor", "patient monitor", "fetal monitor", "cross matching", "transfusion",
+            "defibrillator", "cardiac", "specialized", "advanced", "complex", "automated",
+            "ekg", "ecg", "electrosurgical", "cautery", "diathermy", "coagulation", 
+            "blood gas", "dialysis", "hemodialysis", "peritoneal", "infusion pump",
+            "syringe pump", "suction machine", "anesthesia machine", "ventilator", 
+            "resuscitator", "laryngoscope", "intubation", "orthopedic", "cast", 
+            "traction", "arthroscopy", "gastroscopy", "colposcopy", "colonoscopy",
+            "bronchoscopy", "cystoscopy", "ent", "dermatology", "ophthalmology",
+            "dental", "sterilization equipment", "autoclave", "ethylene oxide", 
+            "surgical instrument", "surgical light", "surgical table", "surgical drill",
+            "surgical saw", "implant", "prosthetic", "theater", "theatre", "operating room"
         ]
         
                 # Items that might be problematic or need review
@@ -105,35 +125,43 @@ class FacilitySuitabilityClassifier:
                 model="gpt-4",
                 messages = [
                     {"role": "system", "content": """You are a healthcare facility equipment specialist
-                        Rural clinics typically have:
-                        - Basic equipment limited to essential primary care
-                        - Basic wound care supplies and dressing materials
-                        - IV cannulation capabilities for fluid administration
-                        - Equipment for uncomplicated deliveries
-                        - Simple diagnostic tools (glucometers, thermometers, blood pressure monitors)
-                        - Limited electricity and often unreliable power
-                        - Basic sterilization (pressure cookers, table-top autoclaves)
-                        - Very limited laboratory capabilities (rapid tests only)
-                        - No advanced imaging
+                    Rural clinics typically have:
+                    - Basic equipment limited to essential primary care and first aid
+                    - Basic maternal and child health services (simple deliveries, growth monitoring)
+                    - Limited or unreliable electricity and water supply
+                    - Minimal laboratory capabilities (usually only rapid diagnostic tests)
+                    - 1-5 healthcare workers, often with limited technical training
+                    - No surgical capabilities beyond basic wound care
+                    - Manual or simple battery-operated equipment only
+                    - Limited cold chain capacity (small vaccine refrigerators)
+                    - Outpatient services only, no overnight stays except for basic deliveries
+                    - No specialized diagnostic equipment or imaging
 
-                        District hospitals have more advanced capabilities including:
-                        - Surgery facilities and operating rooms
-                        - ECG machines and patient monitors
-                        - Imaging equipment (X-ray, ultrasound)
-                        - Laboratory with chemistry analyzers and hematology analyzers
-                        - Blood banking capabilities
-                        - Anesthesia equipment
-                        - More reliable electricity (often with backup generators)
-                        - Oxygen supply systems
-                        - Capacity for more complex procedures
+                    District hospitals have more advanced capabilities including:
+                    - 24/7 inpatient care with admission beds
+                    - Surgical facilities with operating rooms and anesthesia
+                    - More specialized staff (doctors, nurses, lab technicians, pharmacists)
+                    - Laboratory with automated analyzers and microscopy
+                    - Imaging capabilities (X-ray, ultrasound)
+                    - Blood bank and transfusion services
+                    - Reliable electricity with backup generators
+                    - Oxygen supply systems and advanced respiratory support
+                    - Emergency services with resuscitation equipment
+                    - Specialized wards (maternity, pediatric, medical, surgical)
+                    - Capacity for managing moderate to complex cases
+                    - Cold chain and medication storage facilities
 
-                        Based ONLY on this information, classify the medical item into ONE of these categories:
-                        1. Rural Clinic - Suitable for use in basic rural clinics
-                        2. District Hospital - Requires district hospital capabilities
-                        3. Both Settings - Can be effectively used in either setting
-                        4. Needs Review - May not be usable or requires additional assessment            
+                    Based ONLY on the information provided about this medical item, classify it into ONE of these categories:
+                    1. Rural Clinics - Basic items suitable for use in rural health posts and clinics
+                    2. District Hospitals - Items requiring district hospital infrastructure or expertise
+                    3. Both Settings - Can be effectively used in either rural clinics or district hospitals
+                    4. Needs Review - Insufficient information to determine suitability
 
-                        Respond with ONLY the category name."""         
+                    IMPORTANT: If the item is disposable, basic, or requires minimal infrastructure, it likely fits "Both Settings".
+                    If it requires specialized training, continuous electricity, or complex maintenance, it likely fits "District Hospitals".
+                    Only use "Needs Review" if you truly cannot determine the category based on the description.
+
+                    Respond with ONLY the category name."""
                      },
                     {"role": "user", "content": context}
                 ],
@@ -160,6 +188,61 @@ class FacilitySuitabilityClassifier:
             print(f"Error classifying item: {e}")
             return "Needs Review"
         
+    def determine_electricity_usage(self, description, category=None):
+        """
+        Determine if an item requires electricity based on its description.
+        Returns "Yes" if electricity is required, "No" if not.
+        """
+        if pd.isna(description) or description == "":
+            return "Needs Review"
+        
+        desc_lower = description.lower()
+        
+        # Check if it matches any electricity-requiring keywords
+        for keyword in self.requires_electricity:
+            if keyword in desc_lower:
+                return "Yes"
+        
+        # If no clear match through keywords, use OpenAI to classify
+        try:
+            context = f"Description: {description}"
+            if category and not pd.isna(category):
+                context += f", Category: {category}"
+            
+            response = self.client.chat.completions.create(
+                model="gpt-4",
+                messages=[
+                    {"role": "system", "content": """You are a healthcare equipment specialist.
+                        Determine if the specified medical item requires electricity to function properly.
+                        Consider the following:
+                        - Electronic devices or anything with powered components needs electricity
+                        - Battery-operated devices count as requiring electricity
+                        - Mechanical, manual, or unpowered items do not require electricity
+                        - Consumable supplies like bandages, syringes, or medicines do not require electricity
+                        
+                        Respond with ONLY "Yes" or "No"."""
+                    },
+                    {"role": "user", "content": context}
+                ],
+                temperature=0.1,
+                max_tokens=10
+            )
+            
+            result = response.choices[0].message.content.strip()
+            
+            # Clean up response, accepting only Yes or No
+            if result.lower() == "yes":
+                return "Yes"
+            elif result.lower() == "no":
+                return "No"
+            else:
+                # If response isn't clearly Yes or No, default to No
+                return "No"
+                
+        except Exception as e:
+            print(f"Error determining electricity usage: {e}")
+            return "Needs Review"
+
     def process_csv(self, input_file, output_file = None, category_col="Product Category"):
         """
         Process the CSV file to determine facility suitability for each item.
