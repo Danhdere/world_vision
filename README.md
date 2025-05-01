@@ -55,7 +55,7 @@ Mac: Double-click the .zip file.
 
 A new folder with the program’s files will appear. It should be named world_vision
 
-#Step 6: Creating an OpenAI API Account to pay for API calls
+## Step 3: Creating an OpenAI API Account to pay for API calls
 1. Add Payment & Fund Your OpenAI API Account
    Even though OpenAI gives you a free trial credit when you first sign up, you’ll need to add a payment method if you want to keep using       the API after that. Here’s how:
 
@@ -90,13 +90,13 @@ Monitor regularly: Check the “Usage” tab once a week.
 Set alerts: Configure email or Slack alerts for when you hit, say, 75% of your budget.
 Optimize your code: Batch requests or shorten prompts to save tokens.
 
-## Step 3: Setting up the Program
+## Step 4: Setting up the Program
 1. Find the folder called "world_vision-main" on your computer. Should be in the downloads folder on your computer.
 2. Inside the "world_vision-main" folder, find the "web_app" folder
 3. Go to the main.py file. Open it. And insert the api key where the api_key = ... line is.
    (Replace "your_api_key_here" with the API key you saved earlier)
    
-## Step 4: Installing Required Programs
+## Step 5: Installing Required Programs
 1. Open the Terminal (Mac) or Command Prompt (Windows):
    - On Mac: Click the magnifying glass in the top right, type "Terminal", and press Enter
    - On Windows: Click the Start button, type "cmd", and press Enter
@@ -108,7 +108,7 @@ Optimize your code: Batch requests or shorten prompts to save tokens.
    ```
 3. Wait for the installation to finish (you'll see your cursor again when it's done)
 
-## Step 5: Running the Program
+## Step 6: Running the Program
 1. Make sure you're still in the Terminal/Command Prompt
 2. Type this command and press Enter:
    ```
