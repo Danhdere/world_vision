@@ -37,31 +37,37 @@ This is a computer program that helps organize and categorize donated products. 
    - You won't be able to see this key again after you close the window
    - Make sure to copy the entire key
 
-## Step 3: Setting up the Program
-1. Find the folder called "world_vision-main" on your computer
-2. Create a new folder on your Desktop:
-   - Right-click on your Desktop
-   - Select "New Folder"
-   - Name it "world_vision"
-3. Copy all files from "world_vision-main" into your new "world_vision" folder
-4. Inside the "world_vision" folder, find the "web_app" folder
-5. Create a new file called ".env":
-   - Right-click in the "web_app" folder
-   - Select "New" > "Text Document"
-   - Name it ".env" (including the dot at the beginning)
-6. Open the ".env" file and type this exactly:
-   ```
-   OPENAI_API_KEY=your_api_key_here
-   ```
-   (Replace "your_api_key_here" with the API key you saved earlier)
+Downloading the Program from GitHub
 
+Open your web browser (Chrome, Firefox, Safari, Edge, etc.).
+Go to https://github.com/Danhdere/world_vision
+Go to the GitHub page where the program lives. You’ll see something like this at the top right:
+ Code ▼
+Click “Code” to open a menu.
+Choose “Download ZIP”.
+This saves a file called something like world_vision.zip to your computer’s Downloads folder.
+Find the ZIP file in your Downloads folder.
+Unzip (extract) it:
+
+Windows: Right-click the .zip file ➔ “Extract All…” ➔ click “Extract.”
+
+Mac: Double-click the .zip file.
+
+A new folder with the program’s files will appear. It should be named world_vision
+
+## Step 3: Setting up the Program
+1. Find the folder called "world_vision-main" on your computer. Should be in the downloads folder on your computer.
+2. Inside the "world_vision-main" folder, find the "web_app" folder
+3. Go to the main.py file. Open it. And insert the api key where the api_key = ... line is.
+   (Replace "your_api_key_here" with the API key you saved earlier)
+   
 ## Step 4: Installing Required Programs
 1. Open the Terminal (Mac) or Command Prompt (Windows):
    - On Mac: Click the magnifying glass in the top right, type "Terminal", and press Enter
    - On Windows: Click the Start button, type "cmd", and press Enter
 2. Type these commands one at a time (press Enter after each one):
    ```
-   cd Desktop/world_vision/web_app
+   cd Desktop/Downloads/world_vision/web_app
    pip install flask pandas openai python-dotenv Werkzeug
    ```
 3. Wait for the installation to finish (you'll see your cursor again when it's done)
