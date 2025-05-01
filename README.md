@@ -55,6 +55,41 @@ Mac: Double-click the .zip file.
 
 A new folder with the program’s files will appear. It should be named world_vision
 
+#Step 6: Creating an OpenAI API Account to pay for API calls
+1. Add Payment & Fund Your OpenAI API Account
+   Even though OpenAI gives you a free trial credit when you first sign up, you’ll need to add a payment method if you want to keep using       the API after that. Here’s how:
+
+2. Log in to the OpenAI Dashboard
+• Open your web browser and go to https://platform.openai.com/
+• Click Log in, enter your OpenAI account email and password.
+
+3. Go to the Billing Page
+• In the left-hand menu, click Billing (it may look like a little credit-card icon).
+• This shows you your current balance and usage history.
+
+4. Add a Payment Method
+• Under “Payment methods,” click Add a payment method.
+• Enter your credit/debit card details (card number, expiration date, CVC) or choose another supported method.
+• Click Save.
+
+5. Review Pricing & Usage
+• On that same page you’ll see “API pricing” links (for models like GPT-4, GPT-3.5). Click one to see per-token rates.
+• You can set a monthly spending limit or usage alerts if you want to cap how much you spend.
+
+6. Check Your Balance Anytime
+• Your current credit (trial or paid) shows at the top of the Billing page.
+• As you make API calls in your code, the cost is deducted here in real time.
+
+7. Understanding Charges
+• Each API call is billed by “tokens” (roughly words or word-pieces).
+• For example, asking for 100–200 words from GPT-3.5 might cost only a few cents.
+• Always refer back to the pricing page so there are no surprises at the end of the month.
+
+Best Practices:
+Monitor regularly: Check the “Usage” tab once a week.
+Set alerts: Configure email or Slack alerts for when you hit, say, 75% of your budget.
+Optimize your code: Batch requests or shorten prompts to save tokens.
+
 ## Step 3: Setting up the Program
 1. Find the folder called "world_vision-main" on your computer. Should be in the downloads folder on your computer.
 2. Inside the "world_vision-main" folder, find the "web_app" folder
