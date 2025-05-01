@@ -69,6 +69,7 @@ A new folder with the program’s files will appear. It should be named world_vi
    ```
    cd Desktop/Downloads/world_vision/web_app
    pip install flask pandas openai python-dotenv Werkzeug
+   "probably optional"
    ```
 3. Wait for the installation to finish (you'll see your cursor again when it's done)
 
@@ -78,8 +79,6 @@ A new folder with the program’s files will appear. It should be named world_vi
    ```
    python app.py
    ```
-3. Open your internet browser
-4. Type this in the address bar: http://localhost:5000
 5. Press Enter
 
 ## How to Use the Program
@@ -100,22 +99,6 @@ A new folder with the program’s files will appear. It should be named world_vi
   - Product names
   - Descriptions
   - Categories
-
-## If Something Goes Wrong
-1. If you see an error message:
-   - Write down what it says
-   - Check these common problems:
-     - Did you install Python correctly?
-     - Did you copy the API key correctly?
-     - Are you in the right folder when running commands?
-2. If you see "Module not found":
-   - Go back to Step 4 and run the installation commands again
-3. If you see "API key not found":
-   - Check that you created the ".env" file correctly
-   - Make sure the API key is typed correctly
-4. If you see "Port 5000 in use":
-   - Close any other programs that might be using the internet
-   - Try running the program again
 
 ## Need Help?
 1. Look at the error messages in the Terminal/Command Prompt
