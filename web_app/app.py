@@ -13,6 +13,10 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)  # This should be the world_vision/ directory
 sys.path.append(parent_dir)
 
+def normalize_path(path):
+    """Convert a path to an absolute path with correct separators for the OS"""
+    return os.path.abspath(os.path.normpath(path))
+
 from scripts.read_csv import read_inventory_csv
 from scripts.categorize import MedicalInventoryCategorizer
 from scripts.facilitize import FacilitySuitabilityClassifier
@@ -304,15 +308,16 @@ def process_background_task(processing_id, file_path, unique_id, original_filena
         
         # Store results data for the results page
         progress_data['results'] = {
-            'output_path': final_path,
+            'output_path': normalize_path(final_path),
             'output_filename': final_filename,
-            'summary_path': summary_path,
+            'summary_path': normalize_path(summary_path),
             'summary_filename': summary_filename,
             'total_processed': len(df),
             'category_counts': category_counts,
             'facility_counts': facility_counts,
             'processing_time': total_time
         }
+
         
         # Mark processing as complete
         progress_data['status'] = 'Processing complete'
@@ -495,10 +500,10 @@ def progress(processing_id):
     if progress_data.get('completed', False) and not progress_data.get('error') and progress_data.get('results'):
         results = progress_data['results']
         
-        # Store output paths in session for download
-        session['output_path'] = results['output_path']
+        # Store output paths in session for download - use normalized paths
+        session['output_path'] = normalize_path(results['output_path'])
         session['output_filename'] = results['output_filename']
-        session['summary_path'] = results['summary_path']
+        session['summary_path'] = normalize_path(results['summary_path'])
         session['summary_filename'] = results['summary_filename']
         
         # Store other results for display
@@ -596,28 +601,75 @@ def results():
 @app.route('/download/<file_type>')
 def download(file_type):
     """Download the processed file or summary report"""
-    if file_type == 'data':
-        if 'output_path' not in session:
-            flash('No processed file available for download')
+    try:
+        if file_type == 'data':
+            if 'output_path' not in session:
+                flash('No processed file available for download')
+                return redirect(url_for('index'))
+            
+            # Get the path from session
+            output_path = session['output_path']
+            output_filename = session['output_filename']
+            
+            # Try different path variations to find the file
+            possible_paths = [
+                output_path,  # Original path
+                normalize_path(output_path),  # Normalized version
+                os.path.join(app.config['RESULTS_FOLDER'], os.path.basename(output_path))  # Just the filename in results folder
+            ]
+            
+            # Try each path
+            for path in possible_paths:
+                if os.path.exists(path):
+                    return send_file(path, as_attachment=True, download_name=output_filename)
+            
+            # Additional recovery attempt - look for any file with matching unique_id
+            if 'unique_id' in session:
+                unique_id = session['unique_id']
+                for filename in os.listdir(app.config['RESULTS_FOLDER']):
+                    if unique_id in filename and filename.endswith('_processed.csv'):
+                        found_path = os.path.join(app.config['RESULTS_FOLDER'], filename)
+                        return send_file(found_path, as_attachment=True, download_name=output_filename)
+            
+            # If we get here, file not found
+            flash('File not found. It may have been deleted, moved, or not properly saved during processing.')
+            return redirect(url_for('index'))
+            
+        elif file_type == 'summary':
+            if 'summary_path' not in session:
+                flash('No summary report available for download')
+                return redirect(url_for('index'))
+            
+            summary_path = session['summary_path']
+            summary_filename = session['summary_filename']
+            
+            possible_paths = [
+                summary_path,
+                normalize_path(summary_path),
+                os.path.join(app.config['RESULTS_FOLDER'], os.path.basename(summary_path))
+            ]
+            
+            for path in possible_paths:
+                if os.path.exists(path):
+                    return send_file(path, as_attachment=True, download_name=summary_filename)
+            
+            # Additional recovery attempt for summary file
+            if 'unique_id' in session:
+                unique_id = session['unique_id']
+                for filename in os.listdir(app.config['RESULTS_FOLDER']):
+                    if unique_id in filename and filename.endswith('_summary.txt'):
+                        found_path = os.path.join(app.config['RESULTS_FOLDER'], filename)
+                        return send_file(found_path, as_attachment=True, download_name=summary_filename)
+            
+            flash('Summary file not found. It may have been deleted, moved, or not properly saved during processing.')
             return redirect(url_for('index'))
         
-        output_path = session['output_path']
-        output_filename = session['output_filename']
-        
-        return send_file(output_path, as_attachment=True, download_name=output_filename)
-    
-    elif file_type == 'summary':
-        if 'summary_path' not in session:
-            flash('No summary report available for download')
+        else:
+            flash('Invalid download type')
             return redirect(url_for('index'))
-        
-        summary_path = session['summary_path']
-        summary_filename = session['summary_filename']
-        
-        return send_file(summary_path, as_attachment=True, download_name=summary_filename)
-    
-    else:
-        flash('Invalid download type')
+            
+    except Exception as e:
+        flash(f'Error downloading file: {str(e)}')
         return redirect(url_for('index'))
 
 @app.route('/cleanup', methods=['POST'])
