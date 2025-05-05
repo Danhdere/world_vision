@@ -95,8 +95,16 @@ Optimize your code: Batch requests or shorten prompts to save tokens.
 2. Open the Terminal (Mac) or Command Prompt (Windowns):
 3. Type: cd Desktop/Downloads/world_vision/web_app
 4. Run pip install -r requirements.txt in the terminal
-5. Run export OPEN_AI_KEY="your_open_ai_key_here"
-6. Or create a .env file with OPEN_AI_KEY="your_open_ai_key_here"
+5. Run 
+   ```
+   export OPEN_AI_KEY='your_open_ai_key_here"
+   ```
+   or
+   ```
+   set OPEN_AI_KEY='your_open_ai_key_here"
+   ```
+   if on windows 
+7. Or create a .env file with OPEN_AI_KEY="your_open_ai_key_here"
 
 ## Step 5: Running the Program
 1. Make sure you're still in the Terminal/Command Prompt
