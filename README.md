@@ -92,23 +92,13 @@ Optimize your code: Batch requests or shorten prompts to save tokens.
 
 ## Step 4: Setting up the Program
 1. Find the folder called "world_vision-main" on your computer. Should be in the downloads folder on your computer.
-2. Inside the "world_vision-main" folder, find the "web_app" folder
-3. Go to the main.py file. Open it. And insert the api key where the api_key = ... line is.
-   (Replace "your_api_key_here" with the API key you saved earlier)
-   
-## Step 5: Installing Required Programs
-1. Open the Terminal (Mac) or Command Prompt (Windows):
-   - On Mac: Click the magnifying glass in the top right, type "Terminal", and press Enter
-   - On Windows: Click the Start button, type "cmd", and press Enter
-2. Type these commands one at a time (press Enter after each one):
-   ```
-   cd Desktop/Downloads/world_vision/web_app
-   pip install flask pandas openai python-dotenv Werkzeug
-   "probably optional"
-   ```
-3. Wait for the installation to finish (you'll see your cursor again when it's done)
+2. Open the Terminal (Mac) or Command Prompt (Windowns):
+3. Type: cd Desktop/Downloads/world_vision_web_app
+4. Run pip install -r requirements.txt in the terminal
+5. Run export OPEN_AI_KEY="your_open_ai_key_here"
+6. Or create a .env file with OPEN_AI_KEY="your_open_ai_key_here"
 
-## Step 6: Running the Program
+## Step 5: Running the Program
 1. Make sure you're still in the Terminal/Command Prompt
 2. Type this command and press Enter:
    ```
