@@ -93,7 +93,7 @@ Optimize your code: Batch requests or shorten prompts to save tokens.
 ## Step 4: Setting up the Program
 1. Find the folder called "world_vision-main" on your computer. Should be in the downloads folder on your computer.
 2. Open the Terminal (Mac) or Command Prompt (Windowns):
-3. Type: cd Desktop/Downloads/world_vision_web_app
+3. Type: cd Desktop/Downloads/world_vision/web_app
 4. Run pip install -r requirements.txt in the terminal
 5. Run export OPEN_AI_KEY="your_open_ai_key_here"
 6. Or create a .env file with OPEN_AI_KEY="your_open_ai_key_here"
