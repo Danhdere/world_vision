@@ -97,11 +97,11 @@ Optimize your code: Batch requests or shorten prompts to save tokens.
 4. Run pip install -r requirements.txt in the terminal
 5. Run 
    ```
-   export OPEN_AI_KEY='your_open_ai_key_here"
+   export OPEN_AI_KEY=your_open_ai_key_here
    ```
    or
    ```
-   set OPEN_AI_KEY='your_open_ai_key_here"
+   set OPEN_AI_KEY=your_open_ai_key_here
    ```
    if on windows 
 7. Or create a .env file with OPEN_AI_KEY="your_open_ai_key_here"
