@@ -118,7 +118,7 @@ class MedicalInventoryCategorizer:
                 context += f", Subcategory: {subcategory}"
 
             response = self.client.chat.completions.create(
-                model="gpt-4",
+                model="gpt-3.5-turbo",
                 messages = [
                     {"role": "system", "content": f"""You are a helpful assistant that categorizes medical inventory items. 
                      Respond with a single category name that best fits the item.

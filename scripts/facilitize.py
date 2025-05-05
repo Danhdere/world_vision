@@ -210,7 +210,7 @@ class FacilitySuitabilityClassifier:
                 context += f", Category: {category}"
             
             response = self.client.chat.completions.create(
-                model="gpt-4",
+                model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": """You are a healthcare equipment specialist.
                         Determine if the specified medical item requires electricity to function properly.
