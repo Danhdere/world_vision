@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processing Results - Medical Inventory Categorizer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Additional styles specific to results page */
+        .results-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .category-bar-inner {
+            width: 0; /* Will be set dynamically with inline styles */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Medical Inventory Categorizer</h1>
+            <p class="tagline">Processing Results</p>
+        </header>
+
+        <main>
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-check-circle"></i> Processing Complete</h2>
+                </div>
+                <div class="card-body">
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <div class="alert alert-warning">
+                        <ul>
+                            {% for message in messages %}
+                            <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+
+                    <div class="results-summary">
+                        <div class="file-info">
+                            <p><strong>Input File:</strong> {{ original_filename }}</p>
+                            <p><strong>Output File:</strong> {{ output_filename }}</p>
+                            <p><strong>Processing Time:</strong> {{ "%.2f"|format(processing_time) }} seconds</p>
+                        </div>
+
+                        <div class="results-stats">
+                            <div class="stats">
+                                <div class="stat-value">{{ total_processed }}</div>
+                                <label>Items Processed</label>
+                            </div>
+                            <div class="stats">
+                                <div class="stat-value">{{ category_counts|length }}</div>
+                                <label>Categories</label>
+                            </div>
+                            {% if classify_facility %}
+                            <div class="stats">
+                                <div class="stat-value">{{ facility_counts|length }}</div>
+                                <label>Facility Types</label>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="category-distribution">
+                            <h3>Category Distribution</h3>
+                            {% for category, count in category_counts.items() %}
+                            <div class="category-item">
+                                <div class="category-name">{{ category }}</div>
+                                <div class="category-bar">
+                                    <div class="category-bar-inner" style="width: {{ (count / total_processed * 100)|round }}%;">
+                                        {{ count }} ({{ "%.1f"|format(count / total_processed * 100) }}%)
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        {% if classify_facility %}
+                        <div class="category-distribution">
+                            <h3>Facility Suitability Distribution</h3>
+                            {% for facility, count in facility_counts.items() %}
+                            <div class="category-item">
+                                <div class="category-name">{{ facility }}</div>
+                                <div class="category-bar">
+                                    <div class="category-bar-inner" style="width: {{ (count / total_processed * 100)|round }}%;">
+                                        {{ count }} ({{ "%.1f"|format(count / total_processed * 100) }}%)
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-actions" style="margin-top: 30px;">
+                        <a href="{{ url_for('download', file_type='data') }}" class="btn btn-primary">
+                            <i class="fas fa-download"></i> Download Processed Data
+                        </a>
+                        <a href="{{ url_for('download', file_type='summary') }}" class="btn btn-secondary">
+                            <i class="fas fa-file-alt"></i> Download Summary Report
+                        </a>
+                    </div>
+
+                    <form action="{{ url_for('cleanup') }}" method="POST" style="margin-top: 20px; text-align: center;">
+                        <button type="submit" class="btn btn-secondary">
+                            <i class="fas fa-trash"></i> Clean Up & Start New
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 World Vision Medical Inventory System. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+
+</html>

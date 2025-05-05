@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configure Processing - Medical Inventory Categorizer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Medical Inventory Categorizer</h1>
+            <p class="tagline">Configure Processing Options</p>
+        </header>
+
+        <main>
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-cog"></i> Configure Processing</h2>
+                </div>
+                <div class="card-body">
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <div class="alert alert-warning">
+                        <ul>
+                            {% for message in messages %}
+                            <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+
+                    <div class="file-info">
+                        <p><strong>File:</strong> {{ filename }}</p>
+                    </div>
+
+                    <div class="note">
+                        <i class="fas fa-info-circle"></i> Preview the first 5 rows of your data to confirm it was
+                        uploaded correctly.
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    {% for column in columns %}
+                                    <th>{{ column }}</th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in sample %}
+                                <tr>
+                                    {% for column in columns %}
+                                    <td>{{ row[column] }}</td>
+                                    {% endfor %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <form method="POST">
+                        <div class="form-group">
+                            <label>Processing Options:</label>
+
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="preserve_existing" name="preserve_existing" {% if has_category %}checked{% endif %}>
+                                <label for="preserve_existing">Preserve existing category assignments {% if has_category %}(Found in
+                                    data){% endif %}</label>
+                            </div>
+                            <p class="help-text">If checked, existing Product Category values will be kept. Only blank or
+                                missing values will be categorized.</p>
+
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="classify_facility" name="classify_facility" {% if has_facility %}checked{% endif %}>
+                                <label for="classify_facility">Classify facility suitability {% if has_facility %}(Found in
+                                    data){% endif %}</label>
+                            </div>
+                            <p class="help-text">Determine if items are suitable for rural clinics, district hospitals,
+                                or both.</p>
+
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="generate_descriptions" name="generate_descriptions" {% if has_descriptions %}checked{% endif %}>
+                                <label for="generate_descriptions">Generate simple descriptions {% if has_descriptions %}(Found in
+                                    data){% endif %}</label>
+                            </div>
+                            <p class="help-text">Create simplified, layperson-friendly descriptions of medical items.
+                                (Uses more API credits)</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="batch_size">Batch Size:</label>
+                            <input type="number" id="batch_size" name="batch_size" value="50" min="10" max="100">
+                            <p class="help-text">Number of items to process in a batch before pausing to avoid API rate
+                                limits.</p>
+                        </div>
+
+                        <div class="note">
+                            <i class="fas fa-info-circle"></i> Processing will start after you click the button below. You'll see a progress bar with real-time updates.
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-play"></i> Start Processing
+                            </button>
+                            <a href="{{ url_for('index') }}" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 World Vision Medical Inventory System. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+
+</html>
